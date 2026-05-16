@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#060a0f" />
+  <title>NEXUS — {% if mode == 'register' %}Create Account{% else %}Sign In{% endif %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:     #060a0f;
+      --bg2:    #0c1018;
+      --bg3:    #131a24;
+      --border: #1e2d40;
+      --text:   #dce8f5;
+      --text2:  #8096b0;
+      --text3:  #4a5e75;
+      --accent: #4d9eff;
+      --accent2:#1a6fd4;
+      --green:  #22c55e;
+      --orange: #f87171;
+      --purple: #a78bfa;
+      --radius: 14px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; }
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 20% -5%, rgba(29,78,216,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 105%, rgba(109,40,217,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%,  rgba(77,158,255,0.04) 0%, transparent 60%);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(77,158,255,0.06);
+      animation: fadeUp .35s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .auth-logo-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, #1a6fd4, #4d9eff);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(77,158,255,0.35);
+    }
+
+    .auth-logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #dce8f5 40%, #4d9eff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .auth-logo-sub {
+      font-size: 10px;
+      color: var(--text3);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 1px;
+    }
+
+    .auth-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .auth-sub {
+      font-size: 13px;
+      color: var(--text3);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .auth-field {
+      margin-bottom: 16px;
+    }
+
+    .auth-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .auth-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      -webkit-appearance: none;
+    }
+
+    .auth-input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(77,158,255,0.12);
+    }
+
+    .auth-input::placeholder { color: var(--text3); }
+
+    .auth-error {
+      background: rgba(248,113,113,0.08);
+      border: 1px solid rgba(248,113,113,0.25);
+      border-radius: 10px;
+      color: var(--orange);
+      font-size: 13px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .auth-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #1a6fd4, #4d9eff);
+      border: none;
+      border-radius: 11px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 13px;
+      cursor: pointer;
+      transition: all .2s;
+      margin-top: 8px;
+      box-shadow: 0 4px 16px rgba(77,158,255,0.3);
+      letter-spacing: 0.2px;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(77,158,255,0.45);
+      filter: brightness(1.08);
+    }
+
+    .auth-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(77,158,255,0.25);
+    }
+
+    .auth-switch {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text3);
+    }
+
+    .auth-switch a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-switch a:hover { text-decoration: underline; }
+
+    .auth-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    .auth-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .auth-feature {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .auth-feature-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#fff" opacity=".9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="auth-logo-text">NEXUS</div>
+        <div class="auth-logo-sub">Multi-Agent AI OS</div>
+      </div>
+    </div>
+
+    {% if mode == 'register' %}
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Set up NEXUS for your workspace. You'll be the admin user.</div>
+    {% else %}
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Sign in to access your NEXUS workspace.</div>
+    {% endif %}
+
+    {% if error %}
+    <div class="auth-error">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+      <div class="auth-field">
+        <label class="auth-label" for="username">Username</label>
+        <input class="auth-input" type="text" id="username" name="username"
+               placeholder="Enter username" autocomplete="username"
+               required autofocus />
+      </div>
+      <div class="auth-field">
+        <label class="auth-label" for="password">Password</label>
+        <input class="auth-input" type="password" id="password" name="password"
+               placeholder="Enter password" autocomplete="{% if mode == 'register' %}new-password{% else %}current-password{% endif %}"
+               required />
+      </div>
+      {% if mode == 'register' %}
+      <div class="auth-field">
+        <label class="auth-label" for="confirm">Confirm Password</label>
+        <input class="auth-input" type="password" id="confirm" name="confirm"
+               placeholder="Confirm your password" autocomplete="new-password"
+               required />
+      </div>
+      {% endif %}
+      <button class="auth-btn" type="submit">
+        {% if mode == 'register' %}Create Account{% else %}Sign In{% endif %}
+      </button>
+    </form>
+
+    <div class="auth-switch">
+      {% if mode == 'register' %}
+        Already have an account? <a href="/login">Sign in</a>
+      {% else %}
+        No account yet? <a href="/register">Create one</a>
+      {% endif %}
+    </div>
+
+    {% if mode == 'register' %}
+    <hr class="auth-divider" />
+    <div class="auth-features">
+      <div class="auth-feature"><div class="auth-feature-dot" style="background:#4d9eff"></div>10 AI Agents</div>
+      <div class="auth-feature"><div class="auth-feature-dot" style="background:#22c55e"></div>Real Shell Access</div>
+      <div class="auth-feature"><div class="auth-feature-dot" style="background:#a78bfa"></div>Code Generation</div>
+      <div class="auth-feature"><div class="auth-feature-dot" style="background:#f87171"></div>Kali Linux</div>
+      <div class="auth-feature"><div class="auth-feature-dot" style="background:#fbbf24"></div>Image Generation</div>
+      <div class="auth-feature"><div class="auth-feature-dot" style="background:#22d3ee"></div>GitHub Push</div>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: nexus-chat
+    env: python
+    plan: free
+    region: oregon
+    rootDir: .
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: bash run_flask.sh
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: CUSTOM_API_BASE_URL
+        value: https://my-api-com.onrender.com/api/v1
+      - key: CUSTOM_API_KEY
+        value: dd_dA9xQ7mV2kL8pR5tZ3nC1sY6hJ4fW8u
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: KALI_API_URL
+        value: https://my-kali-linux.onrender.com
+      - key: KALI_API_KEY
+        value: kali_dA9xQ7mV2kL8pR5tZ3nC1sY6hJ4fW8u
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: GITHUB_PERSONAL_ACCESS_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
